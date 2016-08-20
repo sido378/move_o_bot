@@ -6,8 +6,10 @@ from pymessenger.bot import Bot
 from pprint import pprint
 
 app = Flask(__name__)
+
+access_token = 'EAAQIAC6xy4cBAPWuGWTUZCta83wmaJwdV4ujK6MmUywZCTvjWiVP53GyjCOVfKA33DWDty3rfholokTU10tLKmcqcGTbUPvL5hmJvdtej5DnFqeSxJRadtBKbBN7ujJNLdPlwCP3vquZBjHVAs9SB0VdGqGvNpdT3gNCXK1lwZDZD'
 DB_FILE = "data.json"
-access_token = 'EAAPlE5lfeCwBALdFDfGaBLGzu9akZCcc4K5oAsMUVC2tCRUdVpLRr1PII4BoTtWPRbgf9LON9HcTB7G1GLBIafJr9Wz8t4d41Yx7tG21AZC9gRW4jMU49Jhwk14cSDDG4Qgq8l79F6LH0bSOkIAldSxu9RIjZB6mZCCPnokHsAZDZD'
+
 
 bot = Bot(access_token)
 
@@ -43,6 +45,7 @@ def post_webhook():
 
                     if sender_id not in user_db:
                       user_db[sender_id] = {}
+                      get_username(sender_id)
                       save_db()
 
                     if 'text' in messaging_event['message']:
@@ -86,3 +89,9 @@ def save_db():
   with open('data.json', 'w') as data_file:
     json.dump(user_db, data_file)
 
+def get_username(sender_id):
+    url = "https://graph.facebook.com/v2.6/"+ sender_id +"?access_token="+ access_token
+    result = requests.get(url)
+    result = json.loads(result.text)
+    user_db[sender_id]["name"]=result['first_name']
+    save_db()
