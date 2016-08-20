@@ -6,7 +6,7 @@ from pymessenger.bot import Bot
 
 app = Flask(__name__)
 
-access_token = 'EAAPlE5lfeCwBALdFDfGaBLGzu9akZCcc4K5oAsMUVC2tCRUdVpLRr1PII4BoTtWPRbgf9LON9HcTB7G1GLBIafJr9Wz8t4d41Yx7tG21AZC9gRW4jMU49Jhwk14cSDDG4Qgq8l79F6LH0bSOkIAldSxu9RIjZB6mZCCPnokHsAZDZD'
+access_token = 'EAAQIAC6xy4cBAPWuGWTUZCta83wmaJwdV4ujK6MmUywZCTvjWiVP53GyjCOVfKA33DWDty3rfholokTU10tLKmcqcGTbUPvL5hmJvdtej5DnFqeSxJRadtBKbBN7ujJNLdPlwCP3vquZBjHVAs9SB0VdGqGvNpdT3gNCXK1lwZDZD'
 
 bot = Bot(access_token)
 
