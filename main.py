@@ -73,7 +73,7 @@ def do_rules(recipient_id, message_text):
     else:
         bot.send_text_message(recipient_id, "You have to write something I understand ;)")
 
-def received_message(sender_id, message):
+def received_message(sender_id, message_text):
     bot.send_text_message(sender_id, message_text)
 
 def received_postback(sender_id, message):
