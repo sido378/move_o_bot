@@ -2,11 +2,13 @@
 import json, urllib
 from flask import Flask, request, abort
 import requests
+from pymessenger.bot import Bot
 
 app = Flask(__name__)
 
-access_token = 'EAAXk6GLIlXcBAHRnz32wf1En9dwNyFBM89KBo6AK38OnMoEmNEGCuNQoGeK4bdl1H5Nq0EA63N95Q7WXjZBoInvkwrGEfDATG9dOZB9Lr2tuHtJbKwGzEppZCus3QWEntls7UZClT7jZC32XGYzl74HQrQubfeJGm6DMhyxqUnAZDZD'
+access_token = 'EAAPlE5lfeCwBALdFDfGaBLGzu9akZCcc4K5oAsMUVC2tCRUdVpLRr1PII4BoTtWPRbgf9LON9HcTB7G1GLBIafJr9Wz8t4d41Yx7tG21AZC9gRW4jMU49Jhwk14cSDDG4Qgq8l79F6LH0bSOkIAldSxu9RIjZB6mZCCPnokHsAZDZD'
 
+bot = Bot(access_token)
 
 @app.route("/", methods=["GET"])
 def root():
@@ -37,11 +39,8 @@ def post_webhook():
 
                     if 'text' in messaging_event['message']:
                         message_text = messaging_event['message']['text']
-                        image = "http://cdn.shopify.com/s/files/1/0080/8372/products/tattly_jen_mussari_hello_script_web_design_01_grande.jpg"
-                        element = create_generic_template_element("Hello", image, message_text)
-                        reply_with_generic_template(sender_id, [element])
 
-                        #do_rules(sender_id, message_text)
+                        bot.send_text_message(sender_id, message_text)
 
     return "ok", 200
 
@@ -58,57 +57,6 @@ def do_rules(recipient_id, message_text):
     }
 
     if message_text in rules:
-        reply_with_text(recipient_id, rules[message_text])
-
+        bot.send_text_message(recipient_id, message_text)
     else:
-        reply_with_text(recipient_id, "You have to write something I understand ;)")
-
-
-def reply_with_text(recipient_id, message_text):
-    message = {
-        "text": message_text
-    }
-    reply_to_facebook(recipient_id, message)
-
-
-def reply_with_generic_template(recipient_id, elements):
-    message = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": elements
-            }
-        }
-    }
-    reply_to_facebook(recipient_id, message)
-
-
-def reply_to_facebook(recipient_id, message):
-    params = {
-        "access_token": access_token
-    }
-
-    headers = {
-        "Content-Type": "application/json"
-    }
-
-    data = json.dumps({
-        "recipient": {
-            "id": recipient_id
-        },
-        "message": message
-    })
-
-    print data
-
-    url = "https://graph.facebook.com/v2.6/me/messages?" + urllib.urlencode(params)
-    r = requests.post(url=url, headers=headers, data=data)
-
-
-def create_generic_template_element(title, image_url, subtitle):
-    return {
-        "title": title,
-        "image_url": image_url,
-        "subtitle": subtitle
-    }
+        bot.send_text_message(recipient_id, "You have to write something I understand ;)")
