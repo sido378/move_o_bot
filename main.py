@@ -47,11 +47,14 @@ def post_webhook():
 
                     if 'text' in messaging_event['message']:
                         message_text = messaging_event['message']['text']
-                        bot.send_text_message(sender_id, message_text)
+                        received_message(sender_id, message_text)
 
                 elif "postback" in messaging_event:
-                    received_postback(messaging_event)
+                    sender_id = messaging_event['sender']['id']
+                    postback = messaging_event['postback']['payload']
+                    received_postback(sender_id, postback)
     return "ok", 200
+
 
 
 def get_url(url):
@@ -70,12 +73,12 @@ def do_rules(recipient_id, message_text):
     else:
         bot.send_text_message(recipient_id, "You have to write something I understand ;)")
 
+def received_message(sender_id, message):
+    bot.send_text_message(sender_id, message_text)
 
-def received_postback(event):
-    sender_id = event['sender']['id']
-    payload = event['postback']['payload']
+def received_postback(sender_id, message):
     if 'GETTING_STARTED' in payload:
-        bot.send_text_message(sender_id, "Hi! My name is Hermes. Are you ready to get quizzed on history? Which topic do you want questions on?")
+        bot.send_text_message(sender_id, "Hi! I'll help you with any questions regarding your Move!")
         # send_introduction
 
 
