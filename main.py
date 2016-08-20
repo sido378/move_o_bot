@@ -14,8 +14,6 @@ bot = Bot(access_token)
 with open('data.json') as data_file:
   user_db = json.load(data_file)
 
-pprint(user_db)
-
 @app.route("/", methods=["GET"])
 def root():
     return "Hello World!"
