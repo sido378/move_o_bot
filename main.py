@@ -45,6 +45,7 @@ def post_webhook():
 
                     if sender_id not in user_db:
                       user_db[sender_id] = {}
+                      get_username(sender_id)
                       save_db()
 
                     if 'text' in messaging_event['message']:
@@ -84,3 +85,10 @@ def received_postback(event):
 def save_db():
   with open('data.json', 'w') as data_file:
     json.dump(user_db, data_file)
+
+def get_username(sender_id):
+    url = "https://graph.facebook.com/v2.6/"+ sender_id +"?access_token="+ access_token
+    result = requests.get(url)
+    result = json.loads(result.text)
+    user_db[sender_id]["name"]=result['first_name']
+    save_db()
